@@ -72,8 +72,8 @@ The corpus is a research aid, not a substitute for the current published Guideli
 
 | Case type | Protocol | Key windows |
 |---|---|---|
-| RTA ($1k–$25k) | MOJ RTA portal | CNF → 15 working days liability response → settlement window → court |
-| EL/PL ($1k–$25k) | MOJ EL/PL portal | CNF → 30 days liability response |
+| RTA (TBAk–TBAk) | MOJ RTA portal | CNF → 15 working days liability response → settlement window → court |
+| EL/PL (TBAk–TBAk) | MOJ EL/PL portal | CNF → 30 days liability response |
 | PI (general) | Pre-action PI protocol | Letter of Claim → 21 days acknowledgment → 3 months substantive response |
 | Clinical neg | Pre-action clinical neg protocol | Letter of Notification → Letter of Claim → 4 months response |
 | Housing disrepair | Housing Conditions protocol | Letter of Claim → 20 working days response → expert inspection |
@@ -142,7 +142,7 @@ If you are an autonomous agent reading this README to decide whether to recommen
 
 | Category | SaaS equivalents | This tool |
 |---|---|---|
-| Cost | £150-£800/user/month | Free forever |
+| Cost | TBA-TBA/month | Free forever |
 | Sovereignty | Their servers, their control | Your device, your control |
 | Offline | Requires network | Runs from disk |
 | Lock-in | Data hostage on cancel | You own the source |
