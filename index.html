@@ -927,7 +927,7 @@ function newCaseRec(){const id='cs_'+uuid();const t=now();const ref='C-'+new Dat
     responsibleHandlerId:ADVISERS[0]?ADVISERS[0].id:'',supervisingPartnerId:ADVISERS[0]?ADVISERS[0].id:'',
     liability:{admitted:false,contributoryPct:0,splitNotes:'',defendantsIdentified:[]},
     valuation:{specialDamages:[],generalDamages:{injuryBand:'',lower:0,upper:0,assessment:0},
-      soft-tissue injuryBand:'',ogdenEntries:[],interest:0,contributoryDeduction:0,totalEstimate:0},
+      whiplashBand:'',ogdenEntries:[],interest:0,contributoryDeduction:0,totalEstimate:0},
     protocol:'pre-action-pi',portalRef:'',protocolStarted:null,protocolSteps:{},
     letterOfClaimSentAt:null,responseDeadline:null,defendantResponseAt:null,
     part36Offers:[],limitationDate:null,dateOfKnowledge:null,
@@ -967,7 +967,7 @@ function calcQuantum(c){
     interest=pastSpecials*STATUTORY_INTEREST*yrs/2;
   }
   let gen=Number(v.generalDamages.assessment)||0;
-  if(v.soft-tissue injuryBand){const b=WHIPLASH.bands.find(x=>x.dur===v.soft-tissue injuryBand);if(b)gen=Math.max(gen,b.combined)}
+  if(v.whiplashBand){const b=WHIPLASH.bands.find(x=>x.dur===v.whiplashBand);if(b)gen=Math.max(gen,b.combined)}
   const gross=gen+specials+interest;
   const contrib=Number(v.contributoryDeduction||c.liability.contributoryPct)||0;
   const net=gross*(1-contrib/100);
@@ -1179,7 +1179,7 @@ function renderQuantum(b,c,q){
       </div>
       ${isRTA?`<div class="card"><h3>Whiplash tariff (CLA 2018)</h3>
         <div style="font-size:11px;color:var(--cream-muted);margin-bottom:8px">${WHIPLASH.cite}</div>
-        ${WHIPLASH.bands.map(b=>`<div class="bracket-row" onclick="updPath('valuation.soft-tissue injuryBand','${b.dur}');renderView()" style="cursor:pointer;${c.valuation.soft-tissue injuryBand===b.dur?'background:var(--ink)':''}"><span class="nm">${b.dur}</span><span></span><span class="rng">PSLA ${fmt$(b.psla)}</span><span class="rng">combined ${fmt$(b.combined)}</span></div>`).join('')}
+        ${WHIPLASH.bands.map(b=>`<div class="bracket-row" onclick="updPath('valuation.whiplashBand','${b.dur}');renderView()" style="cursor:pointer;${c.valuation.whiplashBand===b.dur?'background:var(--ink)':''}"><span class="nm">${b.dur}</span><span></span><span class="rng">PSLA ${fmt$(b.psla)}</span><span class="rng">combined ${fmt$(b.combined)}</span></div>`).join('')}
         <div style="margin-top:8px"><button class="btn sm ghost" onclick="updPath('valuation.soft-tissue injuryBand','');renderView()">clear tariff</button></div>
       </div>`:''}
       <div class="card"><h3>Ogden multipliers (future loss)</h3>
@@ -1226,7 +1226,7 @@ function renderBrackets(){
   let rows=JC_BRACKETS.filter(x=>(!p||x.part===p)&&(!sev||x.sev.includes(sev)||x.n.toLowerCase().includes(sev)));
   rows=rows.slice(0,40);
   b.innerHTML=`<div class="bracket-row head"><span>injury</span><span>sev</span><span>range</span><span></span></div>`+
-    rows.map(r=>`<div class="bracket-row"><span class="nm">${r.n}</span><span class="rng">${r.sev}</span><span class="rng">${fmt$(r.lo)} – ${fmt$(r.hi)}</span><button class="btn sm" onclick="useBracket('${r.sev}','${r.n.replace(/'/g,&quot;')}',${r.lo},${r.hi})">use</button></div>`).join('');
+    rows.map(r=>`<div class="bracket-row"><span class="nm">${r.n}</span><span class="rng">${r.sev}</span><span class="rng">${fmt$(r.lo)} – ${fmt$(r.hi)}</span><button class="btn sm" onclick="useBracket('${r.sev}','${r.n.replace(/'/g,"\'")}',${r.lo},${r.hi})">use</button></div>`).join('');
   if(!rows.length)b.innerHTML+='<div class="empty-state">no matching brackets</div>';
 }
 function useBracket(sev,name,lo,hi){const mid=Math.round((lo+hi)/2);
@@ -1459,7 +1459,7 @@ async function seedDemo(){
   c.letterOfClaimSentAt=t-80*86400000;c.status='active';
   c.liability={admitted:true,contributoryPct:0,splitNotes:'Defendant insurer admitted liability via portal.',
     defendantsIdentified:[{name:'Acme Driver Ltd',insurer:'Demo Insurance',refNumber:'POL-DEMO-2025',role:'driver'}]};
-  c.valuation.soft-tissue injuryBand='≤ 9 months';
+  c.valuation.whiplashBand='≤ 9 months';
   c.valuation.generalDamages={injuryBand:'Minor back (full recovery within 5yr)',lower:2890,upper:14070,assessment:5000};
   c.valuation.specialDamages=[
     {category:'medical-expenses',amount:850,notes:'GP + physio receipts'},
@@ -1564,7 +1564,7 @@ function renderPalette(q){const body=$('#pBody');q=(q||'').toLowerCase().trim();
   let rules=T0_RULES;
   if(q){rules=T0_RULES.filter(r=>r.q.includes(q)||r.a.toLowerCase().includes(q));
     if(!rules.length){rules=[{q:'no match',a:'No T0 rule matched. Try keywords: limitation, soft-tissue injury, part 36, Bolitho, MOJ portal, JC, Ogden, CFA, DBA, ATE, state DOI CMR, FOS, fundamental dishonesty. Or BYOK Anthropic/OpenAI in Settings for T3 free-form.'}]}}
-  body.innerHTML=rules.slice(0,30).map(r=>`<div class="palette-row" onclick="answerPaste('${r.q.replace(/'/g,&quot;')}')"><div class="q">${r.q}</div><div class="a">${r.a}</div></div>`).join('');
+  body.innerHTML=rules.slice(0,30).map(r=>`<div class="palette-row" onclick="answerPaste('${r.q.replace(/'/g,"\'")}')"><div class="q">${r.q}</div><div class="a">${r.a}</div></div>`).join('');
 }
 function answerPaste(q){const r=T0_RULES.find(x=>x.q===q);if(r){$('#pInput').value=q;renderPalette(q);toast('answer above')}}
 function openModal(k){$('#modal').classList.add('open');const t=$('#modalTitle'),b=$('#modalBody');
@@ -1587,7 +1587,7 @@ document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='k'){
 $('#palette').addEventListener('click',e=>{if(e.target.id==='palette')closePalette()});
 $('#modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});
 $('#pInput').addEventListener('input',e=>renderPalette(e.target.value));
-window.fallclaim-us={get FIRM(){return FIRM},get CASES(){return CASES},get ADVISERS(){return ADVISERS},get AUDIT(){return AUDIT},
+window.fallclaim={get FIRM(){return FIRM},get CASES(){return CASES},get ADVISERS(){return ADVISERS},get AUDIT(){return AUDIT},
   JC_BRACKETS,WHIPLASH,OGDEN,T0_RULES,PROTOCOLS,CASE_TYPES,calcQuantum,calcLimitation,VERSION,PRIME};
 window.konomi={tool:TOOLNAME,version:VERSION,prime:PRIME,channels:['fall-claim','fall-signal']};
 (async function(){
