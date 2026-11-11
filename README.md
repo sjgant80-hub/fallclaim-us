@@ -1,6 +1,6 @@
 # ◊ FallClaim · sovereign case management + US quantum engine for claims firms
 
-**v1.0.0 · prime 811 · MIT · single-file**
+**v1.0.0 · MIT · single-file**
 
 One HTML file. Multi-firm, multi-adviser, multi-client, multi-case management for US claims firms (1–10 people) — PI, RTA, EL, PL, clinical negligence, housing disrepair, financial mis-selling, data breach, trip. Embedded Judicial College Guideline quantum corpus + Civil Liability Act 2018 soft-tissue injury tariff + Ogden multiplier tables + demand letter trackers + Part 36 register + limitation calculator. Runs offline. Data never leaves the device.
 
